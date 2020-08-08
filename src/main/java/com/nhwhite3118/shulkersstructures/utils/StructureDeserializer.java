@@ -82,14 +82,14 @@ public class StructureDeserializer {
                 break;
             case "fileName":
                 if (!isString(entry)) {
-                    ShulkersSuperSimpleStructureSystem.LOGGER.error("The required field spawnRate has the wrong type (should be a String).");
+                    ShulkersSuperSimpleStructureSystem.LOGGER.error("The required field fileName has the wrong type (should be a String).");
                     break;
                 }
                 nbtLocation = new ResourceLocation(ShulkersSuperSimpleStructureSystem.MODID, entry.getValue().getAsString());
                 break;
             case "blockLevelsBelowGround":
                 if (!isNumber(entry)) {
-                    ShulkersSuperSimpleStructureSystem.LOGGER.error("The required field blockLevelsBelowGround has the wrong type (should be a whole number).");
+                    ShulkersSuperSimpleStructureSystem.LOGGER.error("The field blockLevelsBelowGround has the wrong type (should be a whole number).");
                     break;
                 }
                 yOffset = -entry.getValue().getAsInt();

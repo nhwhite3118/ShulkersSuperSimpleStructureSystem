@@ -1,0 +1,22 @@
+{
+	"comment":"#### You can remove any lines starting with the word comment. JSON doesn't support comments so this is how we have to do them.",
+
+	"comment_name": "//// You can name your structure whatever you want and this is what will show up using /locate, but once you have set this don't change it.",
+	"comment_name2":"//// There's a nasty bug in 1.16.1 where removing or renaiming structures can corrupt worlds",
+	"structureNameJSON":"dirt_hut_example",
+
+	"comment_seed": "//// It is very important that you set this to a large, unique number for each structure you add. Otherwise your structures will generate on top of each other",
+	"seed":1235437262,
+
+	"comment_biomes": "//// The biomes it can spawn in. These use the registry keys for the biomes. If the f3 biome name doesn't work then check the wiki, it may be different",
+	"biomes":[ "plains", "desert", "mountains", "forest", "taiga", "swamp", "nether_wastes", "birch_forest", "birch_forest_hills", "dark_forest", "wooded_mountains" ],
+
+	"comment_spawnRate":"//// How far apart, in chunks, your structure will try to generate. Structures with fewer valid biomes will be rarer with the same spawn rate set",
+	"spawnRate":12,
+
+	"comment_yOffset":"//// How many y levels down to shift your structure from having the bottom at ground level. A negative number will make it go up instead",
+	"blockLevelsBelowGround":2,
+
+	"comment_filename":"//// The name of the nbt file with your structure. Note that it does not include the file extention",
+	"fileName":"dangerous_dirt_hut"
+}
