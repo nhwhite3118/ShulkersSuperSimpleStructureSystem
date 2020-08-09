@@ -1,6 +1,6 @@
 package com.nhwhite3118.shulkerssupersimplestructuresystem;
 
-import com.nhwhite3118.shulkersstructures.utils.ConfigHelper;
+import com.nhwhite3118.utils.ConfigHelper;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;

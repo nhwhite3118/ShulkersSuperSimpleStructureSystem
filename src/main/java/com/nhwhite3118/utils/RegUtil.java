@@ -1,4 +1,4 @@
-package com.nhwhite3118.shulkersstructures.utils;
+package com.nhwhite3118.utils;
 
 import java.util.Locale;
 

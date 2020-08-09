@@ -5,11 +5,13 @@ import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.nhwhite3118.shulkersstructures.utils.ConfigHelper;
 import com.nhwhite3118.shulkerssupersimplestructuresystem.ShulkersStructuresConfig.ShulkersStructuresConfigValues;
 import com.nhwhite3118.structures.Structures;
 import com.nhwhite3118.structures.simplestructure.SimpleStructure;
+import com.nhwhite3118.utils.ConfigHelper;
+import com.nhwhite3118.utils.StructureDeserializer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraftforge.common.MinecraftForge;
@@ -46,6 +48,9 @@ public class ShulkersSuperSimpleStructureSystem {
     }
 
     private static void addFeaturesAndStructuresToBiomes() {
+        if (Structures.SIMPLE_STRUCTURES.isEmpty()) {
+            StructureDeserializer.readAllFiles(Structures.SIMPLE_STRUCTURES, Minecraft.getInstance().getResourceManager(), "structureJsons");
+        }
         for (Biome biome : ForgeRegistries.BIOMES) {
             String biomeNamespace = biome.getRegistryName().getNamespace();
             String biomePath = biome.getRegistryName().getPath();
@@ -55,9 +60,5 @@ public class ShulkersSuperSimpleStructureSystem {
                 }
             }
         }
-    }
-
-    private void addStructureInfoToSimpleStructuresList() {
-        // ResourceLocation folder = new ResourceLocation("shulkerssupersimplestructuresystem", )
     }
 }

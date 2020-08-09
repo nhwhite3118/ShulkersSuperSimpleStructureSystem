@@ -1,6 +1,12 @@
-package com.nhwhite3118.shulkersstructures.utils;
+package com.nhwhite3118.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +14,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import com.google.common.io.CharStreams;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -16,6 +23,8 @@ import com.google.gson.JsonSyntaxException;
 import com.nhwhite3118.shulkerssupersimplestructuresystem.ShulkersSuperSimpleStructureSystem;
 import com.nhwhite3118.structures.simplestructure.SimpleStructure;
 
+import net.minecraft.resources.IResource;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -25,10 +34,61 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 
 public class StructureDeserializer {
+
+    private StructureDeserializer() {
+    }
+
+    public static void readAllFiles(List<SimpleStructure> output, IResourceManager manager, String configFilesFolder) {
+        try {
+            List<String> allFilenames = listAssetsFolderContents(configFilesFolder);
+            for (String filename : allFilenames) {
+                ResourceLocation resourceLocation = new ResourceLocation("shulkerssupersimplestructures", configFilesFolder + "/" + filename);
+                IResource iResource = manager.getResource(resourceLocation);
+                InputStream inputStream = iResource.getInputStream();
+                String inputString = CharStreams.toString(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                SimpleStructure structure = deserialiseStructure(new StringReader(inputString));
+                if (structure != null) {
+                    output.add(structure);
+                }
+            }
+        } catch (IOException e) { // didn't find the file in this resourcedomain
+            ResourceLocation resourceLocation = new ResourceLocation("shulkerssupersimplestructures", configFilesFolder);
+            ShulkersSuperSimpleStructureSystem.LOGGER
+                    .warn("A problem occurred trying to read the list of config files from folder " + resourceLocation + ":\n" + e.getMessage());
+        }
+    }
+
+    /**
+     * list all the files in a particular resource location Looks in assets/dragonmounts/{pathToFolder} and returns a list of all the filenames it finds
+     **/
+    public static List<String> listAssetsFolderContents(String pathToFolder) throws IOException {
+        final int MAX_LINES = 1000; // just an arbitrary limit to stop silliness
+        final int MAX_LINE_LENGTH = 1000; // just an arbitrary limit to stop silliness
+        List<String> result = new ArrayList<>();
+        InputStream stream = ShulkersSuperSimpleStructureSystem.class.getClassLoader()
+                .getResourceAsStream("assets/" + ShulkersSuperSimpleStructureSystem.MODID + "/" + pathToFolder);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+        int linecount = 0;
+        while (reader.ready()) {
+            String nextLine = reader.readLine();
+            if (++linecount > MAX_LINES) {
+                throw new IOException("Folder " + pathToFolder + " contained too many entries (more than " + MAX_LINES + ")");
+            }
+            if (nextLine.length() > MAX_LINE_LENGTH) {
+                throw new IOException("One of the filenames (" + nextLine.substring(0, 20) + "...) in folder " + pathToFolder + " was too long (more than "
+                        + MAX_LINE_LENGTH + " characters)");
+            }
+
+            result.add(nextLine);
+        }
+        return result;
+    }
+
     /**
      * Deserialise the JSON file for a structure
      */
-    private SimpleStructure deserialiseStructure(Reader input) throws JsonSyntaxException {
+    private static SimpleStructure deserialiseStructure(Reader input) throws JsonSyntaxException {
         JsonParser parser = new JsonParser();
         JsonElement entireFile = parser.parse(input);
         if (!entireFile.isJsonObject())
@@ -37,7 +97,7 @@ public class StructureDeserializer {
         return deserializeTags(entireFile.getAsJsonObject());
     }
 
-    private SimpleStructure deserializeTags(JsonObject jsonObject) {
+    private static SimpleStructure deserializeTags(JsonObject jsonObject) {
         if (!jsonObject.isJsonObject()) {
             ShulkersSuperSimpleStructureSystem.LOGGER.error("Malformed json files found. Try parsing your structure jsons through a json syntax checker");
             return null;
@@ -104,19 +164,19 @@ public class StructureDeserializer {
         return result;
     }
 
-    private boolean isNumber(Map.Entry<String, JsonElement> element) {
+    private static boolean isNumber(Map.Entry<String, JsonElement> element) {
         return element.getValue().isJsonPrimitive() && element.getValue().getAsJsonPrimitive().isNumber();
     }
 
-    private boolean isString(Map.Entry<String, JsonElement> element) {
+    private static boolean isString(Map.Entry<String, JsonElement> element) {
         return element.getValue().isJsonPrimitive() && element.getValue().getAsJsonPrimitive().isString();
     }
 
-    private StructurePiece deserializePiece(JsonObject jsonObject) {
+    private static StructurePiece deserializePiece(JsonObject jsonObject) {
         throw new NotImplementedException("Multiple piece structures not implemented yet");
     }
 
-    private List<Biome> deserializeBiomes(JsonArray biomeArray) {
+    private static List<Biome> deserializeBiomes(JsonArray biomeArray) {
         List<Biome> biomes = new ArrayList<Biome>();
         for (JsonElement entry : biomeArray) {
             String biomeName = entry.getAsString();

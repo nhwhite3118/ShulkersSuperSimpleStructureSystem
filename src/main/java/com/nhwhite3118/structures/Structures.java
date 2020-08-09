@@ -11,7 +11,6 @@ import com.nhwhite3118.structures.simplestructure.SimpleStructure;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.FlatGenerationSettings;
 import net.minecraft.world.gen.GenerationStage;
@@ -28,10 +27,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class Structures {
     public static IStructurePieceType FOR_REGISTERING_SIMPLE_STRUCTURES = com.nhwhite3118.structures.simplestructure.SimpleStructurePieces.Piece::new;
     public static ArrayList<SimpleStructure> SIMPLE_STRUCTURES = new ArrayList<SimpleStructure>();
-
-    private static final Map<String, HashMap<Biome, Boolean>> WHITELISTED_BIOMES = new HashMap<String, HashMap<Biome, Boolean>>();
-
-    private static final Map<String, HashMap<Biome, Boolean>> BLACKLISTED_BIOMES = new HashMap<String, HashMap<Biome, Boolean>>();
 
     /*
      * This is called when the forge event on the mod event bus for registering features is called. Adds structures to all the registries and maps which they
