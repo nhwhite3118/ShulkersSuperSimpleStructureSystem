@@ -14,9 +14,15 @@ public final class ModEventSubscriber {
 
     @SubscribeEvent
     public static void onRegisterFeatures(final RegistryEvent.Register<Feature<?>> event) {
-        if (Structures.SIMPLE_STRUCTURES.isEmpty()) {
-            StructureDeserializer.readAllFiles(Structures.SIMPLE_STRUCTURES, Minecraft.getInstance().getResourceManager(), "structureJsons");
+        try {
+            if (Structures.SIMPLE_STRUCTURES.isEmpty()) {
+                ShulkersSuperSimpleStructureSystem.LOGGER.warn("Structure map is empty in register features. Begining parsing");
+                StructureDeserializer.readAllFiles(Structures.SIMPLE_STRUCTURES, Minecraft.getInstance().getResourceManager(), "structurejsons");
+            }
+            Structures.registerStructures(event);
+        } catch (Exception e) {
+            for (int i = 0; i < 100; i++)
+                ShulkersSuperSimpleStructureSystem.LOGGER.error(e.getMessage());
         }
-        Structures.registerStructures(event);
     }
 }

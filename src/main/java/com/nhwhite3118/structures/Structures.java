@@ -22,7 +22,6 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraftforge.event.RegistryEvent.Register;
-import net.minecraftforge.registries.IForgeRegistry;
 
 public class Structures {
     public static IStructurePieceType FOR_REGISTERING_SIMPLE_STRUCTURES = com.nhwhite3118.structures.simplestructure.SimpleStructurePieces.Piece::new;
@@ -33,7 +32,7 @@ public class Structures {
      * need to be in for them to work properly.
      */
     public static void registerStructures(Register<Feature<?>> event) {
-        IForgeRegistry<Feature<?>> registry = event.getRegistry();
+        ShulkersSuperSimpleStructureSystem.LOGGER.warn("Registering " + SIMPLE_STRUCTURES.size() + " structures");
 
         for (SimpleStructure structure : SIMPLE_STRUCTURES) {
             registerStructure(new ResourceLocation(ShulkersSuperSimpleStructureSystem.MODID, structure.StructureName), structure,
@@ -48,21 +47,26 @@ public class Structures {
      * Adds the provided structure to the registry, and adds the separation settings. This is how the rarity of the structure is set.
      */
     public static <F extends Structure<NoFeatureConfig>> void registerStructure(ResourceLocation resourceLocation, F structure,
-            GenerationStage.Decoration stage, StructureSeparationSettings StructureSeparationSettings) {
+            GenerationStage.Decoration stage, StructureSeparationSettings structureSeparationSettings) {
         structure.setRegistryName(resourceLocation);
         addToStructureInfoMaps(resourceLocation.toString(), structure, stage);
         FlatGenerationSettings.STRUCTURES.put(structure, structure.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG));
 
+//        DimensionStructuresSettings.field_236191_b_ = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder()
+//                .putAll(DimensionStructuresSettings.field_236191_b_).put(structure, structureSeparationSettings).build();
+
         Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(DimensionStructuresSettings.field_236191_b_);
-        tempMap.put(structure, StructureSeparationSettings);
+        tempMap.put(structure, structureSeparationSettings);
         DimensionStructuresSettings.field_236191_b_ = ImmutableMap.copyOf(tempMap);
 
-        DimensionSettings.Preset.field_236122_b_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236123_c_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236124_d_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236125_e_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236126_f_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236127_g_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
+        DimensionSettings.Preset.field_236122_b_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, structureSeparationSettings);
+        DimensionSettings.Preset.field_236123_c_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, structureSeparationSettings);
+        DimensionSettings.Preset.field_236124_d_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, structureSeparationSettings);
+        DimensionSettings.Preset.field_236125_e_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, structureSeparationSettings);
+        DimensionSettings.Preset.field_236126_f_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, structureSeparationSettings);
+        DimensionSettings.Preset.field_236127_g_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, structureSeparationSettings);
+//        DimensionSettings.Preset.field_236128_h_.forEach(
+//                (presetResourceLocation, preset) -> preset.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, structureSeparationSettings));
     }
 
     /*
@@ -70,6 +74,8 @@ public class Structures {
      * structures or else it will cause errors
      */
     private static <F extends Structure<?>> F addToStructureInfoMaps(String name, F structure, GenerationStage.Decoration generationStage) {
+        ShulkersSuperSimpleStructureSystem.LOGGER
+                .warn("Adding structure to the structurefeature registry with key " + name.toLowerCase(Locale.ROOT) + "~~~~~~~~~~~~~~~~~~~~~~");
         Structure.field_236365_a_.put(name.toLowerCase(Locale.ROOT), structure);
         Structure.field_236385_u_.put(structure, generationStage);
         return Registry.register(Registry.STRUCTURE_FEATURE, name.toLowerCase(Locale.ROOT), structure);
@@ -77,6 +83,7 @@ public class Structures {
 
     public static void registerPieces() {
         register(FOR_REGISTERING_SIMPLE_STRUCTURES, "simplestructure");
+        ShulkersSuperSimpleStructureSystem.LOGGER.warn("Adding structure pieces to the register ~~~~~~~~~~~~~~~~~~~~~~");
     }
 
     /*

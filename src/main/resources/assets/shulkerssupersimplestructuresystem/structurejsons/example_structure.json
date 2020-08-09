@@ -1,9 +1,12 @@
 {
 	"comment":"#### You can remove any lines starting with the word comment. JSON doesn't support comments so this is how we have to do them.",
+    "comment2":"#### Note the format of the name of this file. Minecraft will throw errors if you have capital letters, spaces, or most special characters in the file name",
+    "comment3":"#### The valid characters for file names include lowercase a-z, 0-9, the underscore character (_), and the minus character (-)",
+    "comment4":"#### Make sure to close this file in any editors before launching minecraft. Some editors won't let go of the file and cause it to fail to parse'",
 
 	"comment_name": "//// You can name your structure whatever you want and this is what will show up using /locate, but once you have set this don't change it.",
 	"comment_name2":"//// There's a nasty bug in 1.16.1 where removing or renaiming structures can corrupt worlds",
-	"structureNameJSON":"dirt_hut_example",
+	"structureName":"dirthutexample",
 
 	"comment_seed": "//// It is very important that you set this to a large, unique number for each structure you add. Otherwise your structures will generate on top of each other",
 	"seed":1235437262,

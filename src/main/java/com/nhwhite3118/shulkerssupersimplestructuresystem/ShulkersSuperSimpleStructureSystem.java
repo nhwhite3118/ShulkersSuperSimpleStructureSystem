@@ -26,7 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ShulkersSuperSimpleStructureSystem {
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
-    public static final String MODID = "shulkersstructures";
+    public static final String MODID = "shulkerssupersimplestructuresystem";
     public static ShulkersStructuresConfigValues Config = null;
     public static final ENVIRONMENTS ENVIRONMENT = ENVIRONMENTS.PRODUCTION;
 
@@ -49,12 +49,17 @@ public class ShulkersSuperSimpleStructureSystem {
 
     private static void addFeaturesAndStructuresToBiomes() {
         if (Structures.SIMPLE_STRUCTURES.isEmpty()) {
-            StructureDeserializer.readAllFiles(Structures.SIMPLE_STRUCTURES, Minecraft.getInstance().getResourceManager(), "structureJsons");
+            ShulkersSuperSimpleStructureSystem.LOGGER.warn("Structure map is empty in add structures to biomes");
+            StructureDeserializer.readAllFiles(Structures.SIMPLE_STRUCTURES, Minecraft.getInstance().getResourceManager(), "structurejsons");
         }
         for (Biome biome : ForgeRegistries.BIOMES) {
             String biomeNamespace = biome.getRegistryName().getNamespace();
             String biomePath = biome.getRegistryName().getPath();
             for (SimpleStructure structure : Structures.SIMPLE_STRUCTURES) {
+
+                // ShulkersSuperSimpleStructureSystem.LOGGER.debug(structure.StructureName + " has spwn rt: " + structure.getSpawnRate() + " "
+                // + Arrays.asList(structure.VALID_BIOMES).size() + structure.getRegistryName());
+                // ShulkersSuperSimpleStructureSystem.LOGGER.debug("Considering" + structure.StructureName + " for biome " + biome.getRegistryName());
                 if (Arrays.asList(structure.VALID_BIOMES).contains(biome) || Arrays.asList(structure.VALID_BIOME_CATEGORIES).contains(biome.getCategory())) {
                     biome.func_235063_a_(structure.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG));
                 }
