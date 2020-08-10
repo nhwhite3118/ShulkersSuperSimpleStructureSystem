@@ -1,12 +1,14 @@
 package com.nhwhite3118.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,6 @@ import com.google.gson.JsonSyntaxException;
 import com.nhwhite3118.shulkerssupersimplestructuresystem.ShulkersSuperSimpleStructureSystem;
 import com.nhwhite3118.structures.simplestructure.SimpleStructure;
 
-import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -32,6 +33,7 @@ import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 public class StructureDeserializer {
 
@@ -40,20 +42,13 @@ public class StructureDeserializer {
 
     public static void readAllFiles(List<SimpleStructure> output, IResourceManager manager, String configFilesFolder) {
         try {
-            // FMLPaths baseDir = FMLPaths.GAMEDIR;
-            ShulkersSuperSimpleStructureSystem.LOGGER.warn("readAllFiles");
+            Path baseDir = FMLPaths.GAMEDIR.get().resolve("");
             List<String> allFilenames = listAssetsFolderContents(configFilesFolder.toLowerCase());
             for (String filename : allFilenames) {
-                ShulkersSuperSimpleStructureSystem.LOGGER.warn("filename: " + filename);
-                ResourceLocation resourceLocation = new ResourceLocation(ShulkersSuperSimpleStructureSystem.MODID,
-                        configFilesFolder.toLowerCase() + "/" + filename.toLowerCase());
-                ShulkersSuperSimpleStructureSystem.LOGGER.warn("resourceLocation: " + resourceLocation.getPath());
-                IResource iResource = manager.getResource(resourceLocation);
-                ShulkersSuperSimpleStructureSystem.LOGGER.warn("resourceManager did its thing ");
-                InputStream inputStream = iResource.getInputStream();
-                ShulkersSuperSimpleStructureSystem.LOGGER.warn("got that input stream");
+                File dir = baseDir.toFile();
+                InputStream inputStream = ShulkersSuperSimpleStructureSystem.class.getClassLoader()
+                        .getResourceAsStream("assets/" + ShulkersSuperSimpleStructureSystem.MODID + "/" + configFilesFolder.toLowerCase() + "/" + filename);
                 String inputString = CharStreams.toString(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-                ShulkersSuperSimpleStructureSystem.LOGGER.warn("deserializing the structure");
                 SimpleStructure structure = deserialiseStructure(new StringReader(inputString));
                 if (structure != null) {
                     output.add(structure);
@@ -70,7 +65,6 @@ public class StructureDeserializer {
      * list all the files in a particular resource location Looks in assets/dragonmounts/{pathToFolder} and returns a list of all the filenames it finds
      **/
     public static List<String> listAssetsFolderContents(String pathToFolder) throws IOException {
-        ShulkersSuperSimpleStructureSystem.LOGGER.warn("listAssetsFolderContents");
         final int MAX_LINES = 1000; // just an arbitrary limit to stop silliness
         final int MAX_LINE_LENGTH = 1000; // just an arbitrary limit to stop silliness
         List<String> result = new ArrayList<>();
@@ -98,7 +92,6 @@ public class StructureDeserializer {
      * Deserialise the JSON file for a structure
      */
     private static SimpleStructure deserialiseStructure(Reader input) throws JsonSyntaxException {
-        ShulkersSuperSimpleStructureSystem.LOGGER.warn("deserialiseStructure");
         JsonParser parser = new JsonParser();
         JsonElement entireFile = parser.parse(input);
         if (!entireFile.isJsonObject())
@@ -107,7 +100,6 @@ public class StructureDeserializer {
     }
 
     private static SimpleStructure deserializeTags(JsonObject jsonObject) {
-        ShulkersSuperSimpleStructureSystem.LOGGER.warn("deserializeTags");
         if (!jsonObject.isJsonObject()) {
             ShulkersSuperSimpleStructureSystem.LOGGER.error("Malformed json files found. Try parsing your structure jsons through a json syntax checker");
             return null;
