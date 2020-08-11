@@ -22,9 +22,11 @@ Mojang introduced a bug in 1.16 which affects all mods which add structures. If 
  
 
 1. Make a new minecraft instance for this mod
+
 This isn't strictly necessary, but is highly recommended. If you don't, you risk accidentally opening a world you didn't mean to and be forced to keep your current structures or risk corrupting the world. The details on how to do this will vary depending on which launcher you use, but using the default launcher you will want to go to Installations on the top and press the new button. Make sure the game version is forge for 1.16.1, and where it says game directory, make a new folder under your minecraft install (%appdata%/.minecraft/<profileNameHere>). If you run into any issues there are many in-depth articles online regarding how to do this.
 
 2. Set up the folders for your structures
+
 In the files section of this page, below the download for the mod jar there should be an additional files section containing a zip folder with examples. You can also download it off of my github using this link. Download the zip folder, uncompress it, and put it in the base directory of the profile which you will be using (%appdata%/.minecraft by default, but if you did the first step it will be (%appdata%/.minecraft/<profileNameHere>). If you don't want to download the zip folder, the directory layout is below. An example json file is included at the bottom of the page.
 
 Minecraft Game Directory
@@ -40,11 +42,13 @@ All of your json files describing your structures will go in the structurejsons 
  
 
 3. Make your structures
+
 There's too much for me to include here and I don't have the time at the moment, but if you download the examples folder it contains a few structure json files which are heavily commented and should make it clear how you need to describe your structures. It also contains a set of nbt files I've made so you can try making your own json files and get them spawning in your world if you want to practice. When you want to make your own structures, there are some great tutorials on youtube which describe it better than I could here in text.
 
  
 
 4. Share your creations with your friends! (or keep them to yourself)
+
 If you want to share your structures with your friends, all you have to do is zip up the shulkerssupersimplestructuressystem folder in your Minecraft Game Directory and have them unzip it and put it in their directory! They will also need this mod installed of course.
 
  
