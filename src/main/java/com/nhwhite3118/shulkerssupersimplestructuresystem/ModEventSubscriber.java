@@ -21,8 +21,7 @@ public final class ModEventSubscriber {
             }
             Structures.registerStructures(event);
         } catch (Exception e) {
-            for (int i = 0; i < 100; i++)
-                ShulkersSuperSimpleStructureSystem.LOGGER.error(e.getMessage());
+            ShulkersSuperSimpleStructureSystem.LOGGER.error(e.getMessage());
         }
     }
 }

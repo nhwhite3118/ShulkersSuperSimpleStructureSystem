@@ -15,7 +15,7 @@ apply plugin: 'maven-publish'
 
 version = '0.1'
 group = 'io.github.nhwhite3118.shulkerssupersimplestructuresystem' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'shulkersstructures'
+archivesBaseName = 'shulkerssupersimplestructuresystem'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 

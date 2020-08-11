@@ -1,7 +1,7 @@
 package com.nhwhite3118.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +10,7 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,12 +43,12 @@ public class StructureDeserializer {
 
     public static void readAllFiles(List<SimpleStructure> output, IResourceManager manager, String configFilesFolder) {
         try {
-            Path baseDir = FMLPaths.GAMEDIR.get().resolve("");
-            List<String> allFilenames = listAssetsFolderContents(configFilesFolder.toLowerCase());
+            List<String> allFilenames = listFolderContents(configFilesFolder.toLowerCase());
             for (String filename : allFilenames) {
-                File dir = baseDir.toFile();
-                InputStream inputStream = ShulkersSuperSimpleStructureSystem.class.getClassLoader()
-                        .getResourceAsStream("assets/" + ShulkersSuperSimpleStructureSystem.MODID + "/" + configFilesFolder.toLowerCase() + "/" + filename);
+                ShulkersSuperSimpleStructureSystem.LOGGER
+                        .warn("parsing file: " + ShulkersSuperSimpleStructureSystem.MODID + "/" + configFilesFolder.toLowerCase() + "/" + filename);
+                File file = FMLPaths.GAMEDIR.get().resolve(ShulkersSuperSimpleStructureSystem.MODID + "/" + configFilesFolder + "/" + filename).toFile();
+                InputStream inputStream = new FileInputStream(file);
                 String inputString = CharStreams.toString(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
                 SimpleStructure structure = deserialiseStructure(new StringReader(inputString));
                 if (structure != null) {
@@ -64,28 +65,11 @@ public class StructureDeserializer {
     /**
      * list all the files in a particular resource location Looks in assets/dragonmounts/{pathToFolder} and returns a list of all the filenames it finds
      **/
-    public static List<String> listAssetsFolderContents(String pathToFolder) throws IOException {
-        final int MAX_LINES = 1000; // just an arbitrary limit to stop silliness
-        final int MAX_LINE_LENGTH = 1000; // just an arbitrary limit to stop silliness
-        List<String> result = new ArrayList<>();
-        InputStream stream = ShulkersSuperSimpleStructureSystem.class.getClassLoader()
-                .getResourceAsStream("assets/" + ShulkersSuperSimpleStructureSystem.MODID + "/" + pathToFolder);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-        int linecount = 0;
-        while (reader.ready()) {
-            String nextLine = reader.readLine();
-            if (++linecount > MAX_LINES) {
-                throw new IOException("Folder " + pathToFolder + " contained too many entries (more than " + MAX_LINES + ")");
-            }
-            if (nextLine.length() > MAX_LINE_LENGTH) {
-                throw new IOException("One of the filenames (" + nextLine.substring(0, 20) + "...) in folder " + pathToFolder + " was too long (more than "
-                        + MAX_LINE_LENGTH + " characters)");
-            }
-
-            result.add(nextLine);
-        }
-        return result;
+    public static List<String> listFolderContents(String pathToFolder) throws IOException {
+        ShulkersSuperSimpleStructureSystem.LOGGER.warn("About to read info for folder: " + ShulkersSuperSimpleStructureSystem.MODID + "/" + pathToFolder);
+        File folder = FMLPaths.GAMEDIR.get().resolve(ShulkersSuperSimpleStructureSystem.MODID + "/" + pathToFolder).toFile();
+        String[] resultArray = folder.list(null);
+        return Arrays.asList(resultArray);
     }
 
     /**
@@ -117,7 +101,7 @@ public class StructureDeserializer {
         ArrayList<StructurePiece> structurePieces = new ArrayList<StructurePiece>();
         int seed = 0;
         int spawnRate = 0;
-        ResourceLocation nbtLocation = null;
+        Path nbtLocation = null;
         int yOffset = 0;
         List<Biome> biomes = new ArrayList<Biome>();
 
@@ -150,8 +134,8 @@ public class StructureDeserializer {
                     ShulkersSuperSimpleStructureSystem.LOGGER.error("The required field fileName has the wrong type (should be a String).");
                     break;
                 }
-                nbtLocation = new ResourceLocation(ShulkersSuperSimpleStructureSystem.MODID + ":" + entry.getValue().getAsString());
-                ShulkersSuperSimpleStructureSystem.LOGGER.warn("Parsed nbtLocation " + nbtLocation.getPath());
+                nbtLocation = FMLPaths.GAMEDIR.get().resolve(ShulkersSuperSimpleStructureSystem.MODID + "/structureNBTs/" + entry.getValue().getAsString());
+                ShulkersSuperSimpleStructureSystem.LOGGER.warn("Parsed nbtLocation " + nbtLocation.toString());
                 break;
             case "blockLevelsBelowGround":
                 if (!isNumber(entry)) {

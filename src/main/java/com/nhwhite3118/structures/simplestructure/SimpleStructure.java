@@ -1,5 +1,7 @@
 package com.nhwhite3118.structures.simplestructure;
 
+import java.nio.file.Path;
+
 import org.apache.logging.log4j.Level;
 
 import com.mojang.serialization.Codec;
@@ -24,6 +26,7 @@ public class SimpleStructure extends Structure<NoFeatureConfig> {
 
     private int SpawnRate;
     ResourceLocation resources[];
+    Path paths[];
     private int yOffsets[];
     private int Seed;
     public String StructureName;
@@ -36,6 +39,19 @@ public class SimpleStructure extends Structure<NoFeatureConfig> {
         super(codec);
         SpawnRate = spawnRate;
         resources = new ResourceLocation[] { resource };
+        yOffsets = new int[] { yOffset };
+        Seed = seed;
+        StructureName = structureName;
+        VALID_BIOMES = validBiomes;
+        VALID_BIOME_CATEGORIES = validCategories;
+        DECORATOR = decorator;
+    }
+
+    public SimpleStructure(Codec<NoFeatureConfig> codec, int spawnRate, Path path, int yOffset, int seed, String structureName, Biome[] validBiomes,
+            Category[] validCategories, Decoration decorator) {
+        super(codec);
+        SpawnRate = spawnRate;
+        paths = new Path[] { path };
         yOffsets = new int[] { yOffset };
         Seed = seed;
         StructureName = structureName;
@@ -115,7 +131,9 @@ public class SimpleStructure extends Structure<NoFeatureConfig> {
             // where each part goes
             // so that the structure can be added to the world by worldgen.
             SimpleStructure containingStructure = (SimpleStructure) this.getStructure();
-            SimpleStructurePieces.start(templateManagerIn, blockpos, rotation, this.components, this.rand, containingStructure.resources,
+//            SimpleStructurePieces.start(templateManagerIn, blockpos, rotation, this.components, this.rand, containingStructure.resources,
+//                    containingStructure.yOffsets);
+            SimpleStructurePieces.start(templateManagerIn, blockpos, rotation, this.components, this.rand, containingStructure.paths,
                     containingStructure.yOffsets);
 
             // Sets the bounds of the structure.

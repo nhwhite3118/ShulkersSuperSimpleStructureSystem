@@ -4,7 +4,7 @@ loaderVersion="[32,)" #mandatory This is typically bumped every Minecraft versio
 [[mods]] #mandatory
 modId="shulkerssupersimplestructuresystem" #mandatory
 version="${file.jarVersion}" #mandatory
-displayName="Shulkers Structures" #mandatory
+displayName="Shulkers Super Simple Structure System" #mandatory
 #updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="http://example.com/" #optional
@@ -17,21 +17,21 @@ description='''
 I made a simple way to add structures and figured I might as will make it able to read in json to allow everyone to make their own structures.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.cobbler]] #optional
+[[dependencies.shulkerssupersimplestructuresystem]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[31,)" #mandatory
+    versionRange="[32,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
 # Here's another dependency
-[[dependencies.cobbler]]
+[[dependencies.shulkerssupersimplestructuresystem]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]"
+    versionRange="[1.16.1]"
     ordering="NONE"
     side="BOTH"

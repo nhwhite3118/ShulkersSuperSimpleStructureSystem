@@ -49,17 +49,20 @@ public class ShulkersSuperSimpleStructureSystem {
 
     private static void addFeaturesAndStructuresToBiomes() {
         if (Structures.SIMPLE_STRUCTURES.isEmpty()) {
-            ShulkersSuperSimpleStructureSystem.LOGGER.warn("Structure map is empty in add structures to biomes");
-            StructureDeserializer.readAllFiles(Structures.SIMPLE_STRUCTURES, Minecraft.getInstance().getResourceManager(), "structurejsons");
+            ShulkersSuperSimpleStructureSystem.LOGGER.warn("Structure map is empty. This should only happen if user hasn't added any structures");
+            try {
+                StructureDeserializer.readAllFiles(Structures.SIMPLE_STRUCTURES, Minecraft.getInstance().getResourceManager(), "structurejsons");
+            } catch (Exception e) {
+                ShulkersSuperSimpleStructureSystem.LOGGER.error(e.getMessage());
+            }
+        }
+        if (Structures.SIMPLE_STRUCTURES.isEmpty()) {
+            return;
         }
         for (Biome biome : ForgeRegistries.BIOMES) {
             String biomeNamespace = biome.getRegistryName().getNamespace();
             String biomePath = biome.getRegistryName().getPath();
             for (SimpleStructure structure : Structures.SIMPLE_STRUCTURES) {
-
-                // ShulkersSuperSimpleStructureSystem.LOGGER.debug(structure.StructureName + " has spwn rt: " + structure.getSpawnRate() + " "
-                // + Arrays.asList(structure.VALID_BIOMES).size() + structure.getRegistryName());
-                // ShulkersSuperSimpleStructureSystem.LOGGER.debug("Considering" + structure.StructureName + " for biome " + biome.getRegistryName());
                 if (Arrays.asList(structure.VALID_BIOMES).contains(biome) || Arrays.asList(structure.VALID_BIOME_CATEGORIES).contains(biome.getCategory())) {
                     biome.func_235063_a_(structure.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG));
                 }
