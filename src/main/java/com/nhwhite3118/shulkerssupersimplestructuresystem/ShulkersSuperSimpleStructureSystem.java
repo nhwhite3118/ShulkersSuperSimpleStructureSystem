@@ -133,10 +133,6 @@ public class ShulkersSuperSimpleStructureSystem {
                 return;
             }
 
-            // Only The End and modded biomes
-            if (serverWorld.getDimensionKey().equals(World.OVERWORLD) || serverWorld.getDimensionKey().equals(World.THE_NETHER)) {
-                return;
-            }
             Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_());
             for (SimpleStructure structure : Structures.SIMPLE_STRUCTURES) {
                 tempMap.put(structure, DimensionStructuresSettings.field_236191_b_.get(structure));

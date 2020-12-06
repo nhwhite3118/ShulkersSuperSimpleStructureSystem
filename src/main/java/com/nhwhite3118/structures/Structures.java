@@ -18,7 +18,7 @@ import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraftforge.event.RegistryEvent.Register;
 
 public class Structures {
-    public static IStructurePieceType FOR_REGISTERING_SIMPLE_STRUCTURES = com.nhwhite3118.structures.simplestructure.SimpleStructurePieces.Piece::new;
+    public static IStructurePieceType SIMPLE_STRUCTURE_PIECE_TYPE = com.nhwhite3118.structures.simplestructure.SimpleStructurePieces.Piece::new;
     public static ArrayList<SimpleStructure> SIMPLE_STRUCTURES = new ArrayList<SimpleStructure>();
 
     /*
@@ -33,6 +33,7 @@ public class Structures {
             ShulkersSuperSimpleStructureSystem.LOGGER.warn("With name: " + structure.StructureName );
             ShulkersSuperSimpleStructureSystem.LOGGER.warn("With seed: " + structure.getSeed() );
             ShulkersSuperSimpleStructureSystem.LOGGER.warn("With spawn rate: " + structure.getSpawnRate() );
+            ShulkersSuperSimpleStructureSystem.register(event.getRegistry(), structure, structure.StructureName.toLowerCase(Locale.ROOT));
             registerStructure(new ResourceLocation(ShulkersSuperSimpleStructureSystem.MODID, structure.StructureName), structure,
                     GenerationStage.Decoration.SURFACE_STRUCTURES,
                     new StructureSeparationSettings(structure.getSpawnRate(), (int) (structure.getSpawnRate() * 0.75), structure.getSeed()));
@@ -52,7 +53,7 @@ public class Structures {
          * (If you are using deferred registries, do not put this line inside the deferred method. Instead, call it anywhere else before you start the
          * configuredstructure registering)
          */
-        Structure.NAME_STRUCTURE_BIMAP.put(resourceLocation.toString().toLowerCase(), structure);
+        Structure.NAME_STRUCTURE_BIMAP.put(structure.getRegistryName().toString(), structure);
 
         /*
          * Adds the structure's spacing into several places so that the structure's spacing remains correct in any dimension or worldtype instead of not
@@ -66,7 +67,7 @@ public class Structures {
     }
 
     public static void registerPieces() {
-        register(FOR_REGISTERING_SIMPLE_STRUCTURES, "simplestructure");
+        register(SIMPLE_STRUCTURE_PIECE_TYPE, "simplestructure");
         ShulkersSuperSimpleStructureSystem.LOGGER.warn("Adding structure pieces to the register ~~~~~~~~~~~~~~~~~~~~~~");
     }
 

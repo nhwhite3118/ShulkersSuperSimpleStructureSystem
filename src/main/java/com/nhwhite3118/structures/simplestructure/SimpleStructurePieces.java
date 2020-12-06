@@ -93,14 +93,14 @@ public class SimpleStructurePieces {
         }
 
         public Piece(TemplateManager templateManagerIn, CompoundNBT tagCompound) {
-            super(Structures.FOR_REGISTERING_SIMPLE_STRUCTURES, tagCompound);
+            super(Structures.SIMPLE_STRUCTURE_PIECE_TYPE, tagCompound);
             this.resourceLocation = new ResourceLocation(tagCompound.getString("Template"));
             this.rotation = Rotation.valueOf(tagCompound.getString("Rot"));
             this.setupPiece(templateManagerIn);
         }
 
         public Piece(TemplateManager templateManagerIn, ResourceLocation resourceLocationIn, BlockPos pos, Rotation rotationIn) {
-            super(Structures.FOR_REGISTERING_SIMPLE_STRUCTURES, 0);
+            super(Structures.SIMPLE_STRUCTURE_PIECE_TYPE, 0);
             this.resourceLocation = resourceLocationIn;
             this.templatePosition = pos;
             this.rotation = rotationIn;
@@ -108,7 +108,7 @@ public class SimpleStructurePieces {
         }
 
         public Piece(TemplateManager templateManagerIn, Path path, BlockPos pos, Rotation rotationIn) {
-            super(Structures.FOR_REGISTERING_SIMPLE_STRUCTURES, 0);
+            super(Structures.SIMPLE_STRUCTURE_PIECE_TYPE, 0);
             this.path = path;
             this.templatePosition = pos;
             this.rotation = rotationIn;

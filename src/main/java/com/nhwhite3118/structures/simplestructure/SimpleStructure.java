@@ -76,16 +76,16 @@ public class SimpleStructure extends Structure<NoFeatureConfig> {
         return DECORATOR;
     }
 
-    /*
-     * The structure name to show in the /locate command.
-     * 
-     * Make sure this matches what the resourcelocation of your structure will be because if you don't add the MODID: part, Minecraft will put minecraft: in
-     * front of the name instead and we don't want that. We want our structure to have our mod's ID rather than Minecraft so people don't get confused.
-     */
-    @Override
-    public String getStructureName() {
-        return ShulkersSuperSimpleStructureSystem.MODID + ":" + this.StructureName;
-    }
+//    /*
+//     * The structure name to show in the /locate command.
+//     * 
+//     * Make sure this matches what the resourcelocation of your structure will be because if you don't add the MODID: part, Minecraft will put minecraft: in
+//     * front of the name instead and we don't want that. We want our structure to have our mod's ID rather than Minecraft so people don't get confused.
+//     */
+//    @Override
+//    public String getStructureName() {
+//        return ShulkersSuperSimpleStructureSystem.MODID + ":" + this.StructureName;
+//    }
 
     /*
      * This is how the worldgen code will start the generation of our structure when it passes the checks.
