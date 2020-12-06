@@ -35,6 +35,7 @@ import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class StructureDeserializer {
 
@@ -174,11 +175,9 @@ public class StructureDeserializer {
         for (JsonElement entry : biomeArray) {
             String biomeName = entry.getAsString();
             ResourceLocation biomeResourceLocation = new ResourceLocation(biomeName);
-            if (Registry.BIOME.containsKey(biomeResourceLocation)) {
-                Optional<Biome> biome = Registry.BIOME.getValue(biomeResourceLocation);
-                if (biome.isPresent()) {
-                    biomes.add(biome.get());
-                }
+            if (ForgeRegistries.BIOMES.containsKey(biomeResourceLocation)) {
+                Biome biome = ForgeRegistries.BIOMES.getValue(biomeResourceLocation);
+                biomes.add(biome);
             }
         }
         return biomes;

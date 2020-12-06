@@ -11,9 +11,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.IFeatureConfig;
@@ -64,6 +66,16 @@ public class SimpleStructure extends Structure<NoFeatureConfig> {
         return SpawnRate;
     }
 
+
+    /**
+     * Generation stage for when to generate the structure. there are 10 stages you can pick from! This surface structure stage places the structure before
+     * plants and ores are generated.
+     */
+    @Override
+    public GenerationStage.Decoration getDecorationStage() {
+        return DECORATOR;
+    }
+
     /*
      * The structure name to show in the /locate command.
      * 
@@ -106,7 +118,8 @@ public class SimpleStructure extends Structure<NoFeatureConfig> {
         }
 
         @Override
-        public void func_230364_a_(ChunkGenerator generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn, IFeatureConfig config) {
+        public void func_230364_a_(DynamicRegistries dynamicRegistries, ChunkGenerator generator, TemplateManager templateManagerIn, int chunkX, int chunkZ,
+                Biome p_230364_5_, IFeatureConfig config) {
             // Check out vanilla's WoodlandMansionStructure for how they offset the x and z
             // so that they get the y value of the land at the mansion's entrance, no matter
             // which direction the mansion is rotated.
@@ -121,7 +134,7 @@ public class SimpleStructure extends Structure<NoFeatureConfig> {
             int z = (chunkZ << 4) + 7;
 
             // Finds the y value of the terrain at location.
-            int surfaceY = generator.func_222531_c(x, z, Heightmap.Type.WORLD_SURFACE_WG);
+            int surfaceY = generator.getNoiseHeightMinusOne(x, z, Heightmap.Type.WORLD_SURFACE_WG);
             if (surfaceY < 30) {
                 return;
             }

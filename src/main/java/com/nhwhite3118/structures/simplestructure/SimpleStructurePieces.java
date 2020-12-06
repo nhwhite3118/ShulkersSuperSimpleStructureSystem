@@ -9,13 +9,19 @@ import java.util.Random;
 import com.nhwhite3118.shulkerssupersimplestructuresystem.ShulkersSuperSimpleStructureSystem;
 import com.nhwhite3118.structures.Structures;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.tileentity.ShulkerBoxTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
@@ -120,17 +126,18 @@ public class SimpleStructurePieces {
         }
 
         @Override
-        protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {
+        protected void handleDataMarker(String function, BlockPos pos, IServerWorld worldIn, Random rand, MutableBoundingBox sbb) {
+//            if (function.startsWith("Sentry")) {
+//                ShulkerEntity shulkerentity = EntityType.SHULKER.create(worldIn.getWorld());
+//                shulkerentity.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);
+//                shulkerentity.setAttachmentPos(pos);
+//                worldIn.addEntity(shulkerentity);
+//                worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 1 | 2);
+//            } else if ("chest".equals(function)) {
+//                worldIn.setBlockState(pos, Blocks.SHULKER_BOX.getDefaultState(), 2);
+//                TileEntity tileentity = worldIn.getTileEntity(pos);
+//            }
         }
-//
-//        @Override
-//        public boolean func_225577_a_(IWorld worldIn, ChunkGenerator<?> p_225577_2_, Random randomIn, MutableBoundingBox structureBoundingBoxIn,
-//                ChunkPos chunkPos) {
-//            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE);
-//            this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(0, 0, 0)));
-//
-//            return super.func_225577_a_(worldIn, p_225577_2_, randomIn, structureBoundingBoxIn, chunkPos);
-//        }
     }
 
 }
