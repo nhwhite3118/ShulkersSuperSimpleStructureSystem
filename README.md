@@ -1,4 +1,5 @@
 # Shulker's Super Simple Structure System
+![](http://cf.way2muchnoise.eu/title/401397.svg) ![](http://cf.way2muchnoise.eu/full_401397_downloads.svg) ![](http://cf.way2muchnoise.eu/versions/401397.svg)
 
 Do you have cool builds? Want to share them with friends and have them generate randomly in their. or your world? This mod aims to make creating structures simple without requireing any knowledge regaurding programming languages.
 
